@@ -89,6 +89,9 @@ def parse_file( fname, edges, transform, screen, color ):
         elif line == 'ident':
             ident(transform)
 
+        elif line == 'circle':
+            add_circle(edges, float(args[0]), float(args[1]), float(args[2]), float(args[3])) 
+
         elif line == 'apply':
             matrix_mult( transform, edges )
 
