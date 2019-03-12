@@ -8,17 +8,29 @@ def add_circle( points, cx, cy, cz, r, step ):
     while (i < step):
         x0 = r * cos(2 * math.pi *t) + cx
         y0 = r * sin(2 * math.pi *t) + cy
-        
+        t+= (step/100)
         x1 = r * cos(2 * math.pi * (t)) + cx
-        y1 = r * sin(2 * math.pi * (t)) + cy 
+        y1 = r * sin(2 * math.pi * (t)) + cy
         i+=2
-        t+=t
         add_edge( points, x0, y0, 0, x1, y1, 0 )
-        
-        
+
+
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-    cur
-    
+    if curve_type == 'hermite':
+
+    elif curve_type == 'berzier':
+        i = 0
+        #a= -1 * P0 + 3 * P1 - 3 * P2 + P3
+        #b = 3* P0 - 6 * P1 + 3 * P2
+        #c = -1 * 3 * P0 + 3 * P1
+        #d = 3 *P2
+
+        while (i < step):
+            #pt = a*t^3 + b*t^2 + c*t + d
+
+    else:
+        return
+
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
         print 'Need at least 2 points to draw'
@@ -30,16 +42,16 @@ def draw_lines( matrix, screen, color ):
                    int(matrix[point][1]),
                    int(matrix[point+1][0]),
                    int(matrix[point+1][1]),
-                   screen, color)    
+                   screen, color)
         point+= 2
-        
+
 def add_edge( matrix, x0, y0, z0, x1, y1, z1 ):
     add_point(matrix, x0, y0, z0)
     add_point(matrix, x1, y1, z1)
-    
+
 def add_point( matrix, x, y, z=0 ):
     matrix.append( [x, y, z, 1] )
-    
+
 
 
 
@@ -63,7 +75,7 @@ def draw_line( x0, y0, x1, y1, screen, color ):
     if ( abs(x1-x0) >= abs(y1 - y0) ):
 
         #octant 1
-        if A > 0:            
+        if A > 0:
             d = A + B/2
 
             while x < x1:
