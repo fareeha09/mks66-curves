@@ -4,32 +4,54 @@ import math
 
 def add_circle( points, cx, cy, cz, r, step ):
     i = 0
-    t = step/100
+    t = 1/step
     while (i < step):
-        x0 = r * cos(2 * math.pi *t) + cx
-        y0 = r * sin(2 * math.pi *t) + cy
-        t+= (step/100)
-        x1 = r * cos(2 * math.pi * (t)) + cx
-        y1 = r * sin(2 * math.pi * (t)) + cy
-        i+=2
-        add_edge( points, x0, y0, 0, x1, y1, 0 )
-
+        x0 = r * math.cos(2 * math.pi *t) + cx
+        y0 = r * math.sin(2 * math.pi *t) + cy
+                
+        t+= (1/step)
+        
+        x1 = r * math.cos(2 * math.pi * (t)) + cx
+        y1 = r * math.sin(2 * math.pi * (t)) + cy
+        
+        x0 = int(x0)
+        y0 = int(y0)
+        x1 = int(x1)
+        y1 = int(y1)
+		
+        i+=1
+        add_edge( points, x0, y0, cz, x1, y1, cz )
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
     if curve_type == 'hermite':
-
+        m=make_hermite()
     elif curve_type == 'berzier':
-        i = 0
-        #a= -1 * P0 + 3 * P1 - 3 * P2 + P3
-        #b = 3* P0 - 6 * P1 + 3 * P2
-        #c = -1 * 3 * P0 + 3 * P1
-        #d = 3 *P2
-
-        while (i < step):
-            #pt = a*t^3 + b*t^2 + c*t + d
-
+        m=make_berzier()
     else:
         return
+	
+    xcoef= generate_curve_coefs(x0,x1,x2,x3,m)
+    ax=xcoef[0]
+    bx=xcoef[1]
+    cx=xcoef[2]	
+    dx=xcoef[3]
+    ycoef= generate_curve_coefs(y0,y1,y2,y3,m)
+    ay=ycoef[0]
+    by=ycoef[1]
+    cy=ycoef[2]	
+    dy=ycoef[3]
+
+    i = 0
+    t=1/step
+    while (i < step):
+        #pt = a*t^3 + b*t^2 + c*t + d
+        x1= ax* math.pow(t,3) + bx * math.pow(t,2) + cx*t + dx
+        y1= ay* math.pow(t,3) + by * math.pow(t,2) + cy*t + dy
+		
+        add_edge(points, x0, y0, 0, x1, y1, 0)
+        t+=1/step
+        i+=1
+
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
